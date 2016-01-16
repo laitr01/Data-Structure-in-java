@@ -1,6 +1,7 @@
 package document;
 
 import java.util.List;
+import java.util.regex.Matcher;
 
 /** 
  * A naive implementation of the Document abstract class. 
@@ -30,7 +31,9 @@ public class BasicDocument extends Document
 	{
 		//TODO: Implement this method.  See the Module 1 support videos 
 	    // if you need help.
-	    return 0;
+		String pattern = "[a-zA-Z]+";
+		List<String> tokens = getTokens(pattern);
+	    return tokens.size();
 	}
 	
 	/**
@@ -46,7 +49,10 @@ public class BasicDocument extends Document
 	{
 	    //TODO: Implement this method.  See the Module 1 support videos 
         // if you need help.
-        return 0;
+		String pattern ="[^?!.]+";
+		List<String> tokens = getTokens(pattern); 
+		
+        return tokens.size();
 	}
 	
 	/**
@@ -62,7 +68,14 @@ public class BasicDocument extends Document
 	{
 	    //TODO: Implement this method.  See the Module 1 support videos 
         // if you need help.
-        return 0;
+		//String pattern = "([aeiouy]+)|[aeiouy]+e$";
+		String pattern = "[aeiouy]+";
+		List<String> tokens = getTokens(pattern); 
+		int total = tokens.size();
+		pattern = "\\w*[rlcv]e[\\s.,!//)]|\\w*[rvlc]e$";
+		tokens = getTokens(pattern); 
+		total -= tokens.size();
+        return total;
 	}
 	
 	
@@ -70,6 +83,7 @@ public class BasicDocument extends Document
 	 * You are encouraged to add your own tests.  */
 	public static void main(String[] args)
 	{
+		
 		testCase(new BasicDocument("This is a test.  How many???  "
 		        + "Senteeeeeeeeeences are here... there should be 5!  Right?"),
 				16, 13, 5);
@@ -86,7 +100,6 @@ public class BasicDocument extends Document
 		testCase(new BasicDocument("Sentences?!"), 3, 1, 1);
 		testCase(new BasicDocument("Lorem ipsum dolor sit amet, qui ex choro quodsi moderatius, nam dolores explicari forensibus ad."),
 		         32, 15, 1);
-		
 		
 	}
 	
