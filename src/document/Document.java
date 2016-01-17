@@ -53,9 +53,42 @@ public abstract class Document {
 		// TODO: Implement this method so that you can call it from the 
 	    // getNumSyllables method in BasicDocument (module 1) and 
 	    // EfficientDocument (module 2).
-	    return 0;
+		int cnt = 0;
+		String pattern = "[ouiaey]+";
+		Matcher m = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(word);
+		char end = word.charAt(word.length() - 1);
+		
+		while(m.find())
+			cnt ++;
+		if(word.length() > 2){
+			//char preEnd = word.charAt(word.length() - 2);
+			if(end == 'e'){
+				if(check(word)==true)
+					cnt --;
+			}
+		}
+		
+		return cnt;
 	}
-	
+	public boolean check(String word){
+		boolean flag = false;
+		for(int i =0; i < word.length()-2; i ++){
+			if(word.charAt(i) == 'o' || word.charAt(i) == 'i' || word.charAt(i) == 'u'
+					|| word.charAt(i) == 'a' || word.charAt(i) == 'y'|| word.charAt(i) == 'e'){
+				
+				if(word.charAt(word.length()-2) != 'o' && word.charAt(word.length()-2) != 'i' && word.charAt(word.length()-2) != 'u'
+					&& word.charAt(word.length()-2) != 'a' &&  word.charAt(word.length()-2) != 'y'&& word.charAt(word.length()-2) != 'e'){
+					flag = true;
+				}else{
+					flag = false;
+				}
+				
+			}
+		}
+		
+		return flag;
+	}
+
 	/** A method for testing
 	 * 
 	 * @param doc The Document object to test
@@ -117,7 +150,7 @@ public abstract class Document {
 	public double getFleschScore()
 	{
 	    // TODO: Implement this method
-	    return 0.0;
+	    return 206.835 - 1.015*this.getNumWords()/this.getNumSentences()- 84.6*this.getNumSyllables()/this.getNumWords();
 	}
 	
 	

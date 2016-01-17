@@ -1,7 +1,5 @@
 package document;
-
 import java.util.List;
-import java.util.regex.Matcher;
 
 /** 
  * A naive implementation of the Document abstract class. 
@@ -13,6 +11,7 @@ public class BasicDocument extends Document
 	 * 
 	 * @param text The full text of the Document.
 	 */
+
 	public BasicDocument(String text)
 	{
 		super(text);
@@ -32,8 +31,10 @@ public class BasicDocument extends Document
 		//TODO: Implement this method.  See the Module 1 support videos 
 	    // if you need help.
 		String pattern = "[a-zA-Z]+";
+		
 		List<String> tokens = getTokens(pattern);
-	    return tokens.size();
+		
+		return tokens.size();
 	}
 	
 	/**
@@ -68,16 +69,16 @@ public class BasicDocument extends Document
 	{
 	    //TODO: Implement this method.  See the Module 1 support videos 
         // if you need help.
-		//String pattern = "([aeiouy]+)|[aeiouy]+e$";
-		String pattern = "[aeiouy]+";
+		String pattern = "[a-zA-Z]+";
 		List<String> tokens = getTokens(pattern); 
-		int total = tokens.size();
-		pattern = "\\w*[rlcv]e[\\s.,!//)]|\\w*[rvlc]e$";
+		//pattern = "\\w*[rlcv]e[\\s.,!//)]|\\w*[rvlc]e$";
 		tokens = getTokens(pattern); 
-		total -= tokens.size();
-        return total;
+		int sum = 0;
+		for(String tk: tokens){
+			sum += countSyllables(tk);
+		}
+		return sum;
 	}
-	
 	
 	/* The main method for testing this class. 
 	 * You are encouraged to add your own tests.  */
@@ -97,10 +98,10 @@ public class BasicDocument extends Document
 				+ "but most of them will."), 49, 33, 3);
 		testCase(new BasicDocument("Segue"), 2, 1, 1);
 		testCase(new BasicDocument("Sentence"), 2, 1, 1);
-		testCase(new BasicDocument("Sentences?!"), 3, 1, 1);
+		testCase(new BasicDocument("A higher score indicates easier readability scores usually range between 0 and 100."), 3, 1, 1);
 		testCase(new BasicDocument("Lorem ipsum dolor sit amet, qui ex choro quodsi moderatius, nam dolores explicari forensibus ad."),
 		         32, 15, 1);
-		
 	}
 	
+
 }
