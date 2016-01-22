@@ -1,6 +1,8 @@
 package document;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** 
  * A class that represents a text document
@@ -14,7 +16,7 @@ public class EfficientDocument extends Document {
 	private int numWords;  // The number of words in the document
 	private int numSentences;  // The number of sentences in the document
 	private int numSyllables;  // The number of syllables in the document
-	
+	List<String> tokens;
 	public EfficientDocument(String text)
 	{
 		super(text);
@@ -41,10 +43,13 @@ public class EfficientDocument extends Document {
 	{
 		// Provide this first line in the starter code.  
 		// Words are only strings of letters.  No numbers.
-		List<String> tokens = getTokens("[!?.]+|[a-zA-Z]+");
+		tokens = getTokens("[!?.]+|[a-zA-Z]+");
 		
 		// TODO: Finish this method.  Remember the countSyllables method from 
 		// Document.  That will come in handy here.
+		this.numSentences = getNumSentences();
+		this.numWords = getNumWords();
+		this.numSyllables = getNumSyllables();
 	}
 	
 	
@@ -58,7 +63,12 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumWords() {
 		//TODO: write this method.  Hint: It's simple
-	    return 0;
+		int cntWords = 0;
+		for(String tok: tokens){
+			if(isWord(tok))
+				cntWords += 1;
+		}
+	    return cntWords;
 	}
 
 	/**
@@ -72,7 +82,8 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSentences() {
         //TODO: write this method.  Hint: It's simple
-        return 0;
+		List<String> tokens = getTokens("[^?.!]+");  
+		return tokens.size();
 	}
 
 	/**
@@ -86,7 +97,13 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSyllables() {
         //TODO: write this method.  Hint: It's simple
-        return 0;
+		int totalSyllables = 0;
+		for(String tok: tokens){
+			if(isWord(tok))
+				totalSyllables += countSyllables(tok);
+		}
+
+		return totalSyllables;
 	}
 	
 	// Can be used for testing

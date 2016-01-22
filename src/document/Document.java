@@ -45,50 +45,31 @@ public abstract class Document {
 	// This is a helper function that returns the number of syllables
 	// in a word.  You should write this and use it in your 
 	// BasicDocument class.
-	// You will probably NOT need to add a countWords or a countSentences method
-	// here.  The reason we put countSyllables here because we'll use it again
-	// next week when we implement the EfficientDocument class.
-	protected int countSyllables(String word)
+	protected static int countSyllables(String word)
 	{
-		// TODO: Implement this method so that you can call it from the 
-	    // getNumSyllables method in BasicDocument (module 1) and 
-	    // EfficientDocument (module 2).
-		int cnt = 0;
-		String pattern = "[ouiaey]+";
-		Matcher m = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(word);
-		char end = word.charAt(word.length() - 1);
-		
-		while(m.find())
-			cnt ++;
-		if(word.length() > 2){
-			//char preEnd = word.charAt(word.length() - 2);
-			if(end == 'e'){
-				if(check(word)==true)
-					cnt --;
+	    //System.out.print("Counting syllables in " + word + "...");
+		int numSyllables = 0;
+		boolean newSyllable = true;
+		String vowels = "aeiouy";
+		char[] cArray = word.toCharArray();
+		for (int i = 0; i < cArray.length; i++)
+		{
+		    if (i == cArray.length-1 && Character.toLowerCase(cArray[i]) == 'e' 
+		    		&& newSyllable && numSyllables > 0) {
+                numSyllables--;
+            }
+		    if (newSyllable && vowels.indexOf(Character.toLowerCase(cArray[i])) >= 0) {
+				newSyllable = false;
+				numSyllables++;
+			}
+			else if (vowels.indexOf(Character.toLowerCase(cArray[i])) < 0) {
+				newSyllable = true;
 			}
 		}
-		
-		return cnt;
+		//System.out.println( "found " + numSyllables);
+		return numSyllables;
 	}
-	public boolean check(String word){
-		boolean flag = false;
-		for(int i =0; i < word.length()-2; i ++){
-			if(word.charAt(i) == 'o' || word.charAt(i) == 'i' || word.charAt(i) == 'u'
-					|| word.charAt(i) == 'a' || word.charAt(i) == 'y'|| word.charAt(i) == 'e'){
-				
-				if(word.charAt(word.length()-2) != 'o' && word.charAt(word.length()-2) != 'i' && word.charAt(word.length()-2) != 'u'
-					&& word.charAt(word.length()-2) != 'a' &&  word.charAt(word.length()-2) != 'y'&& word.charAt(word.length()-2) != 'e'){
-					flag = true;
-				}else{
-					flag = false;
-				}
-				
-			}
-		}
-		
-		return flag;
-	}
-
+	
 	/** A method for testing
 	 * 
 	 * @param doc The Document object to test
@@ -149,8 +130,10 @@ public abstract class Document {
 	/** return the Flesch readability score of this document */
 	public double getFleschScore()
 	{
-	    // TODO: Implement this method
-	    return 206.835 - 1.015*this.getNumWords()/this.getNumSentences()- 84.6*this.getNumSyllables()/this.getNumWords();
+		double wordCount = (double)getNumWords();
+		return 206.835 - (1.015 * ((wordCount)/getNumSentences())) 
+				- (84.6 * (((double)getNumSyllables())/wordCount));
+	
 	}
 	
 	
