@@ -28,15 +28,8 @@ public class WPTreeGrader {
         String feedback = "";
 
         PrintWriter out;
-        try {
-            out = new PrintWriter("grader_output/module5.part3.out");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
 
-        try {
-
+      
             Dictionary dict = new DictionaryHashSet();
             DictionaryLoader.loadDictionary(dict, "data/grader_dict.txt");
             WPTree tree = new WPTree(new NearbyWords(dict)); 
@@ -60,13 +53,8 @@ public class WPTreeGrader {
             
             feedback += "** Test #4: Testing using a nonexistent word...";
             feedback += "Your path was: " + printPath(path) + ".\n";
-        } catch (Exception e) {
-            out.println(e);
-            out.close();
-            return;
-        }
 
-        out.println(feedback + "Tests complete. Make sure everything looks right.");
-        out.close();
-    }
+
+
+}
 }
